@@ -1,8 +1,8 @@
-# Programming Languages
+# Programming Language
 
 ## About
 
-Project "Programming Languages" is simple artificial programming language, which
+Project "Programming Language" is simple artificial programming language, which
 is build on JavaScript.
 
 ## Sample code
