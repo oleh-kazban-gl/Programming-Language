@@ -3,14 +3,27 @@
  * Available via the MIT or new BSD license.
  * see: https://github.com/olehkazban/Programming-Language for details
  *
- * Actions: here defined all possible actions for entity
+ * @param (Array)
  */
 
-module.exports = {
+var keyword = require('./../core/keywords');
 
-  /**
-   */
-  compile: function() {
+function execute(func, args) {
+  switch(func) {
+    case 'print': keyword.print(args)
+  }
+}
 
+module.exports = function (input) {
+
+  for (var count = 0; count < input.length; count++) {
+    for (var objectProperty in input[count]) {
+      if (input[count].hasOwnProperty(objectProperty)) {
+        var func = objectProperty;
+        var args = input[count][objectProperty];
+
+        execute(func, args);
+      }
+    }
   }
 };

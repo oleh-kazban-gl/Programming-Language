@@ -3,7 +3,7 @@
  * Available via the MIT or new BSD license.
  * see: https://github.com/olehkazban/Programming-Language for details
  *
- * Actions: here defined all possible actions for entity
+ *
  */
 
 /*
@@ -25,7 +25,7 @@
  print: print('Hello World!') - prints to console 'Hello World!'
  */
 
-var utils = require('./utils');
+var utils = require('./../utils/utils');
 
 module.exports = {
 
@@ -35,9 +35,9 @@ module.exports = {
    */
 
   print: function (input) {
-    console.log(parseInput(input));
+    console.log(parsePrintInput(input));
 
-    function parseInput(input, indent) {
+    function parsePrintInput(input, indent) {
       if (indent === undefined) {
         indent = '';
       }
@@ -50,7 +50,7 @@ module.exports = {
 
           if (utils.inputType(input[count]) === 'object' ||
             utils.inputType(input[count]) === 'array') {
-            data += '\n' + parseInput(input[count], indent + '\t');
+            data += '\n' + parsePrintInput(input[count], indent + '\t');
           } else {
             data += input[count];
           }
@@ -69,7 +69,7 @@ module.exports = {
             data += indent + objectProperty + '\t : ';
             if (utils.inputType(input[objectProperty]) === 'object' ||
               utils.inputType(input[objectProperty]) === 'array') {
-              data += '\n' + parseInput(input[objectProperty], indent + '\t');
+              data += '\n' + parsePrintInput(input[objectProperty], indent + '\t');
             } else {
               data += input[objectProperty] + '\n';
             }
