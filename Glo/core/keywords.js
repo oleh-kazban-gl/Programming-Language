@@ -113,10 +113,41 @@ module.exports = {
     }
   },
 
+  /**
+   * Return an Number as result of adding x to y or String as concatenating of inputs
+   * @param {Number|String} - returns either arithmetical adding of numbers or
+   * concatenated String if input is String
+   */
+
   add: function (x, y) {
+    if (utils.inputType(x) === 'number' && utils.inputType(y) === 'number') {
+      return x + y;
+    } else if (utils.inputType(x) === 'string' || utils.inputType(y) === 'string') {
+      return x + y;
+    } else if (utils.inputType(x) === 'null' || utils.inputType(y) === 'null') {
+      return null;
+    } else if (utils.inputType(x) === 'undefined' || utils.inputType(y) === 'undefined') {
+      return undefined;
+    } else {
+      throw new Error('Incorrect number format: ' + x + ', ' + y);
+    }
   },
 
+  /**
+   * Return an Number as result of subtraction y from x
+   * @param {Number}
+   */
+
   minus: function (x, y) {
+    if (utils.inputType(x) === 'number' && utils.inputType(y) === 'number') {
+      return x - y;
+    } else if (utils.inputType(x) === 'null' || utils.inputType(y) === 'null') {
+      return null;
+    } else if (utils.inputType(x) === 'undefined' || utils.inputType(y) === 'undefined') {
+      return undefined;
+    } else {
+      throw new Error('Incorrect input types: ' + x + ' ' + y);
+    }
   },
 
   multiply: function (x, y) {

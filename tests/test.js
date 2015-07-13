@@ -172,6 +172,62 @@ describe('Programming Language', function () {
       });
     });
 
+    describe('#add()', function() {
+      it('Should return an Integer if input is Integer', function() {
+        expect(keywords.add(3, 4)).to.equal(7);
+      });
+
+      it('Should return an Float if one of input Numbers is Float', function() {
+        expect(keywords.add(1.22, 4)).to.equal(5.22);
+      });
+
+      it('Should return a Number if both inputs are numbers', function() {
+        expect(utils.inputType(keywords.add(1.22, 7.62))).to.equal('number');
+      });
+
+      it('Should return a String if one of inputs is String', function() {
+        expect(utils.inputType(keywords.add('my favourite calibre is ', 7.62))).to.equal('string');
+      });
+
+      it('Should return a Null if one of inputs is Null', function() {
+        expect(utils.inputType(keywords.add(null, 7.62))).to.equal('null');
+      });
+
+      it('Should return a Undefined if one of inputs is Undefined', function() {
+        expect(utils.inputType(keywords.add(undefined, 7.62))).to.equal('undefined');
+      });
+
+      it('Should throw an Error if input type is incorrect', function() {
+        expect(function() {
+          keywords.add(3, {1: '1'});
+        }).to.throwError();
+      });
+    });
+
+    describe('#minus()', function() {
+      it('Should accept numbers', function() {
+        expect(keywords.minus(10, 5)).to.equal(5);
+      });
+
+      it('Should return Number', function() {
+        expect(utils.inputType(keywords.minus(10, 5))).to.equal('number');
+      });
+
+      it('Should return Float if one of inputs is Float', function() {
+        expect(keywords.minus(10.62, 1)).to.equal(9.62);
+      });
+
+      it('Should return Integer if both of inputs Are Integers', function() {
+        expect(keywords.minus(10, 1)).to.equal(9);
+      });
+
+      it('Should throw an Error if one of inputs is not Number', function() {
+        expect(function() {
+          keywords.minus('try to minus', 3);
+        }).to.throwError('Incorrect input types: try to minus 3');
+      });
+    });
+
 
   });
 
