@@ -2,6 +2,8 @@ print('Hello World!');
 print('Hello World one more time!');
 print([1,2,3]);
 print([1,test,7.62]);
-print(module(-144));
-print(module(-7.62));
+
+# print(module(-144)); this string will be ignored because of '# ' comment signature
+# print(module(-7.62)); this string will be ignored because of '# ' comment signature
+
 random(0, 100);
