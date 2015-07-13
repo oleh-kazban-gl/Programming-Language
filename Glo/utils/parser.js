@@ -20,68 +20,93 @@ module.exports = function (input) {
     }
   }
 
+  return query;
+
+  /**
+   * Function is used for parsing source String
+   */
+
   function parseString(string) {
-    if (string !== '' || utils.inputType(string) !== 'null' || utils.inputType(string) !== 'undefined') {
+    if (string !== '' ||
+      utils.inputType(string) !== 'null' ||
+      utils.inputType(string) !== 'undefined') {
 
-      if (string.charAt(0) !== '#' && string.match(/^\w*\(/).length > 0) {
-        var methodCall = string.match(/^\w*\(/)[0];
-        var arguments = string.match(/\((.*?)\)/)[1];
-
-        methodCall = methodCall.substr(0, methodCall.length - 1);
-
-        if (arguments[0] === '\'' && arguments[arguments.length - 1] === '\'') {          //Input is String
-          arguments = arguments.replace(/^'|'$/g, '');
-
-          var functionCall = {};
-          functionCall[methodCall] = arguments;
-          query.push(functionCall);
-
-          //return functionCall;
-        } else if (arguments[0] === '\[' && arguments[arguments.length - 1] === '\]') {   //Input is Array
-          arguments = arguments.replace(/^\[|\]$/g, '').split(',');
-
-          var output = [];
-
-          for (var count = 0; count < arguments.length; count++) {
-            if (!isNaN(parseInt(arguments[count]))) {
-              if (arguments[count].indexOf('.') >= 0) {
-                output.push(parseFloat(arguments[count]));
-              } else {
-                output.push(parseInt(arguments[count]));
-              }
-            } else {
-              output.push(arguments[count]);
-            }
-          }
-
-          var functionCall = {};
-          functionCall[methodCall] = output;
-          query.push(functionCall);
-
-          //return functionCall;
-
-        } else if (arguments.indexOf(',') >= 0) {                                  //Complex arguments
-          var multiArguments = arguments.split(',');
-
-          var functionalCall = {};
-          functionalCall[methodCall] = multiArguments;
-
-          //return methodCall + ' : ' + multiArguments;
-          query.push(functionalCall);
-
-        } else {
-          console.log('arguments is NOT a simple string');
-
-        }
-      } else if (string.charAt(0) === '#' && string.charAt(1) === ' ') {                                      //Do nothing, this is comment String
-
-      } else {
-        throw new Error('Invalid entrance point');
+      //Skip commented String - the '# ' signature
+      if (string.charAt(0) === '#' && string.charAt(1) === ' ') {
       }
-    } else {
-      throw new Error('Incorrect input: ' + string);
+
+      //Search for operator occurrence operator(argument)
+      else if (string.match(/^\w*\(/).length > 0) {
+        var methodCall;
+        var arguments;
+
+        methodCall = string.match(/^\w*\(/)[0];
+        methodCall = methodCall.substring(0, methodCall.length - 1);
+        arguments = string.match(/\((.*?)\);/)[1];
+
+        //Search for internal calls
+        //if (arguments.match(/^\w*\(/).length > 0) {
+        //
+        //}
+
+        var functionCall = {};
+
+        //If argument is not internal call - what is in argument?
+
+        //Argument is simple String
+        if (arguments.charAt(0) === '\'' && arguments.charAt(arguments.length - 1) === '\'') {
+          arguments = arguments.substring(1, arguments.length - 1);
+
+          //Argument is a String of different arguments separated by coma ','
+          if (arguments.indexOf('\',\'') >= 0) {
+            var strings = arguments.split('\',\'');
+
+            //Restore original types of cells
+            for (var count = 0; count < strings.length; count++) {
+              strings[count] = restoreEntity(strings[count]);
+            }
+
+            functionCall[methodCall] = strings;
+          } else {
+            functionCall[methodCall] = arguments;
+          }
+        }
+
+
+        //Argument is an Array
+
+
+        query.push(functionCall);
+      }
     }
   }
 
-  return query;
+  /**
+   * Function is used for restoring of original primitives
+   */
+
+  function restoreEntity(entity) {
+    //Looking for dots - entity can be String or Float
+    if (entity.indexOf('.') >= 0) {
+      if (!isNaN(parseFloat(entity))) {
+        //Successfully converted to Float
+        return parseFloat(entity);
+      } else {
+        //Entity contains a dot, but convert failed, so it is a String
+        return entity;
+      }
+
+      //Entity doesn't contain dots - so it is either String without dots or Integer
+    } else {
+      if (!isNaN(parseInt(entity))) {
+        //Successfully converted to Float
+        return parseInt(entity);
+      } else {
+        //Entity doesn't contain a dot, but convert failed, so it is a String
+        return entity;
+      }
+    }
+  }
 };
+
+

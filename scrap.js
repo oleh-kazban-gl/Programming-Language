@@ -125,6 +125,16 @@ console.log(commands.add(testFloat, testFloat2));
 console.log(commands.add(testString, testString2));
 console.log(commands.add(testInt,  testFloat));
 
+var testSource = 'print(\'Hello World :)\');';
+var testSource2 = 'print(random(0,100));';
+console.log(testSource.match(/^\w*\(/)[0]);
+console.log(testSource.match(/\((.*?)\);/)[1]);
+console.log(testSource.match(/\((.*?)\);/));
+
+console.log(testSource2.match(/^\w*\(/)[0]);
+console.log(testSource2.match(/\((.*?)\);/)[1]);
+console.log(testSource2.match(/\((.*?)\);/));
+
 
 
 
