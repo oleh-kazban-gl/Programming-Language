@@ -98,7 +98,8 @@ module.exports = {
 
   /**
    * Return an absolute value of number
-   * @param {Number}
+   * @param {Number} x
+   * @param {Number} y
    */
 
   module: function (x) {
@@ -135,7 +136,8 @@ module.exports = {
 
   /**
    * Return an Number as result of subtraction y from x
-   * @param {Number}
+   * @param {Number} x
+   * @param {Number} y
    */
 
   minus: function (x, y) {
@@ -150,12 +152,57 @@ module.exports = {
     }
   },
 
+  /**
+   * Return an Number as result of multiplying of y and x
+   * @param {Number} x
+   * @param {Number} y
+   */
+
   multiply: function (x, y) {
+    if (utils.inputType(x) === 'number' && utils.inputType(y) === 'number') {
+      return x * y;
+    } else if (utils.inputType(x) === 'null' || utils.inputType(y) === 'null') {
+      return null;
+    } else if (utils.inputType(x) === 'undefined' || utils.inputType(y) === 'undefined') {
+      return undefined;
+    } else {
+      throw new Error('Incorrect input types: ' + x + ' ' + y);
+    }
   },
+
+  /**
+   * Return an Number as result of dividing of x by y
+   * @param {Number} x
+   * @param {Number} y
+   */
 
   divide: function (x, y) {
+    if (utils.inputType(x) === 'number' && utils.inputType(y) === 'number') {
+      return x / y;
+    } else if (utils.inputType(x) === 'null' || utils.inputType(y) === 'null') {
+      return null;
+    } else if (utils.inputType(x) === 'undefined' || utils.inputType(y) === 'undefined') {
+      return undefined;
+    } else {
+      throw new Error('Incorrect input types: ' + x + ' ' + y);
+    }
   },
 
+  /**
+   * Return an Random Number between min and max value
+   * @param {Number} min
+   * @param {Number} max
+   */
+
   random: function (min, max) {
+    if (utils.inputType(min) === 'number' && utils.inputType(max) === 'number') {
+      return Math.random() * (max - min) + min;
+    } else if (utils.inputType(min) === 'null' || utils.inputType(max) === 'null') {
+      return null;
+    } else if (utils.inputType(min) === 'undefined' || utils.inputType(max) === 'undefined') {
+      return undefined;
+    } else {
+      throw new Error('Incorrect input types: ' + min + ' ' + max);
+    }
   }
 };
