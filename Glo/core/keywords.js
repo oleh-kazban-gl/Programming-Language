@@ -25,6 +25,8 @@
  print: print('Hello World!') - prints to console 'Hello World!'
  loop
 
+ If String begins from symbol'#' this is a comment
+
  */
 
 var utils = require('./../utils/utils');
@@ -33,7 +35,7 @@ module.exports = {
 
   /**
    * Print input to console
-   * @param {String|Array|Object} - accept and parse any type of data
+   * @param {String|Array} - accept and parse any simple one dimensional Arrays or Strings
    */
 
   print: function (input) {
@@ -85,21 +87,44 @@ module.exports = {
     }
   },
 
-  loop: function(start, condition, increment) {},
+  loop: function (start, condition, increment) {
+  },
 
-  condition: function(condition){},
+  condition: function (condition) {
+  },
 
-  regexp: function(x, func) {},
+  regexp: function (x, func) {
+  },
 
-  module: function(x) {},
+  /**
+   * Return an absolute value of number
+   * @param {Number}
+   */
 
-  add: function(x, y) {},
+  module: function (x) {
+    if (utils.inputType(x) === 'null') {
+      return null;
+    } else if (utils.inputType(x) === 'undefined') {
+      return undefined;
+    } else if (!isNaN(Math.abs(x))) {
+      return Math.abs(x);
+    } else {
+      throw new Error('Incorrect input type: ' + x);
+    }
+  },
 
-  minus: function(x, y) {},
+  add: function (x, y) {
+  },
 
-  multiply: function(x, y) {},
+  minus: function (x, y) {
+  },
 
-  divide: function(x, y) {},
+  multiply: function (x, y) {
+  },
 
-  random: function(min, max) {}
+  divide: function (x, y) {
+  },
+
+  random: function (min, max) {
+  }
 };

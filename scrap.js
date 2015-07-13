@@ -1,4 +1,5 @@
 var commands = require('./Glo/core/keywords');
+var sinon = require('sinon');
 
 var testIntArray = [0, 1, 2, 3, 4];
 var testStringArray = [
@@ -76,6 +77,11 @@ var testString = 'try to test me :)';
 var testString2 = '100';
 var testString3 = '100.55';
 
+var testInt = 100;
+var testInt2 = -144;
+var testFloat = 100.11;
+var testFloat2 = -144.22;
+
 //commands.print(testIntArray);
 //commands.print(testStringArray);
 //commands.print(testSimpleObject);
@@ -87,7 +93,23 @@ var testParseInt2 = parseInt(testString2);
 var testParseInt3 = parseInt(testString3);
 var testParseFloat3 = parseFloat(testString3);
 
-commands.print(testParseInt);
-commands.print(testParseInt2);
-commands.print(testParseInt3);
-commands.print(testParseFloat3);
+//commands.print(testParseInt);
+//commands.print(testParseInt2);
+//commands.print(testParseInt3);
+//commands.print(testParseFloat3);
+
+//commands.print(commands.module(testInt));
+//commands.print(commands.module(testInt2));
+//commands.print(commands.module(testFloat));
+//commands.print(commands.module(testFloat2));
+
+var spy = sinon.spy();
+
+commands.print(spy());
+
+commands.print(spy.called);
+commands.print(spy.calledOnce);
+commands.print(spy.calledTwice);
+
+
+

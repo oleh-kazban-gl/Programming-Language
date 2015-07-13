@@ -26,7 +26,7 @@ module.exports = function (input) {
 
         methodCall = methodCall.substr(0, methodCall.length - 1);
 
-        if (arguments[0] === '\'' && arguments[arguments.length - 1] === '\'') {
+        if (arguments[0] === '\'' && arguments[arguments.length - 1] === '\'') {          //Input is String
           arguments = arguments.replace(/^'|'$/g, '');
 
           var functionCall = {};
@@ -34,7 +34,7 @@ module.exports = function (input) {
           query.push(functionCall);
 
           return methodCall + ' : ' + arguments;
-        } else if (arguments[0] === '\[' && arguments[arguments.length - 1] === '\]') {
+        } else if (arguments[0] === '\[' && arguments[arguments.length - 1] === '\]') {   //Input is Array
           arguments = arguments.replace(/^\[|\]$/g, '').split(',');
 
           var output = [];
@@ -59,10 +59,13 @@ module.exports = function (input) {
 
         } else {
           console.log('arguments is NOT a simple string');
+
         }
       } else {
         throw new Error('Invalid entrance point');
       }
+    } else {
+      throw new Error('Incorrect input: ' + string);
     }
   }
 

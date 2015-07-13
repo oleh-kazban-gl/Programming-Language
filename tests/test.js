@@ -95,7 +95,7 @@ describe('Programming Language', function () {
       var source = loader.load();
       var output = parser(source);
 
-      expect(output.length).to.equal(4);
+      expect(output.length).to.above(0);
     });
 
     it('Should return an Array if input for keyword is [a, b, c] construction', function() {
@@ -124,14 +124,55 @@ describe('Programming Language', function () {
 
 
   describe('#keywords', function () {
-    it('Should use print keyword', function() {
-      var spy = sinon.spy();
-      var printCall = keywords.print(spy());
+    describe('#print()', function() {
+      it('Should use print keyword', function() {
+        var spy = sinon.spy();
+        keywords.print(spy());
 
-      printCall;
-
-      expect(spy.called).to.equal(true);
+        expect(spy.called).to.equal(true);
+      });
     });
+
+    describe('#module()', function() {
+      it('Should use module keyword', function() {
+        var spy = sinon.spy();
+        keywords.module(spy());
+
+        expect(spy.called).to.equal(true);
+      });
+
+      it('Should return a Number', function() {
+        expect(utils.inputType(keywords.module(762))).to.equal('number');
+      });
+
+      it('Should return a Float if input has decimal point', function() {
+        expect(keywords.module(7.62)).to.equal(7.62);
+      });
+
+      it('Should return an Integer if input has not decimal point', function() {
+        expect(keywords.module(762)).to.equal(762);
+      });
+
+      it('Should return an absolute value of Number', function() {
+        expect(keywords.module(-762)).to.equal(762);
+      });
+
+      it('Should throw an Error if input is not a Number and show incorrect input', function() {
+        expect(function() {
+          keywords.module('try to test me :)');
+        }).to.throwError('Incorrect input type: try to test me :)');
+      });
+
+      it('Should return Null if input is Null', function() {
+        expect(utils.inputType(keywords.module(null))).to.equal('null');
+      });
+
+      it('Should return Undefined if input is Undefined', function() {
+        expect(utils.inputType(keywords.module(undefined))).to.equal('undefined');
+      });
+    });
+
+
   });
 
   describe('#loader', function () {
