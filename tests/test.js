@@ -91,11 +91,34 @@ describe('Programming Language', function () {
       expect(testObject['print']).to.equal('Hello');
     });
 
-    it('Should return an array of expected size if are multiple calls in source file', function() {
+    it('Should return an Array of expected size if are multiple calls in source file', function() {
       var source = loader.load();
       var output = parser(source);
 
-      expect(output.length).to.equal(2);
+      expect(output.length).to.equal(4);
+    });
+
+    it('Should return an Array if input for keyword is [a, b, c] construction', function() {
+      var testObject = parser('print([1,2,3])')[0];
+      expect(utils.inputType(testObject['print'])).to.equal('array');
+    });
+
+    it('Should parse and return according type of cells: ' +
+      'if input can be parsed as number and has decimal point - it is Float',  function() {
+      var testObject = parser('print([7.62])')[0];
+      expect(parseFloat(testObject['print'][0])).to.equal(7.62);
+    });
+
+    it('Should parse and return according type of cells: ' +
+      'if input can be parsed as number and has not decimal point - it is Integer',  function() {
+      var testObject = parser('print([762])')[0];
+      expect(parseFloat(testObject['print'][0])).to.equal(762);
+    });
+
+    it('Should parse and return according type of cells: ' +
+      'if input can not be parsed as numbers - it is String',  function() {
+      var testObject = parser('print(\'762\')')[0];
+      expect(testObject['print']).to.be.a('string');
     });
   });
 

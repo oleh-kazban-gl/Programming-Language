@@ -9,8 +9,39 @@
 var keyword = require('./../core/keywords');
 
 function execute(func, args) {
-  switch(func) {
-    case 'print': keyword.print(args)
+  switch (func) {
+    case 'print':
+      keyword.print(args);
+      break;
+    case 'loop':
+      keyword.loop(args);
+      break;
+    case 'condition':
+      keyword.condition(args);
+      break;
+    case 'regexp':
+      keyword.regexp(args);
+      break;
+    case 'module':
+      keyword.module(args);
+      break;
+    case 'add':
+      keyword.add(args);
+      break;
+    case 'minus':
+      keyword.minus(args);
+      break;
+    case 'multiply':
+      keyword.multiply(args);
+      break;
+    case 'divide':
+      keyword.divide(args);
+      break;
+    case 'random':
+      keyword.random(args);
+      break;
+    default:
+      throw new Error('Unknown command identifier');
   }
 }
 

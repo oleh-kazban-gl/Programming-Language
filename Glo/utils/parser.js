@@ -34,6 +34,29 @@ module.exports = function (input) {
           query.push(functionCall);
 
           return methodCall + ' : ' + arguments;
+        } else if (arguments[0] === '\[' && arguments[arguments.length - 1] === '\]') {
+          arguments = arguments.replace(/^\[|\]$/g, '').split(',');
+
+          var output = [];
+
+          for (var count = 0; count < arguments.length; count++) {
+            if (!isNaN(parseInt(arguments[count]))) {
+              if (arguments[count].indexOf('.') >= 0 ) {
+                output.push(parseFloat(arguments[count]));
+              } else {
+                output.push(parseInt(arguments[count]));
+              }
+            } else {
+              output.push(arguments[count]);
+            }
+          }
+
+          var functionCall = {};
+          functionCall[methodCall] = output;
+          query.push(functionCall);
+
+          return methodCall + ' : ' + arguments;
+
         } else {
           console.log('arguments is NOT a simple string');
         }

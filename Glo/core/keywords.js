@@ -23,6 +23,8 @@
 
  built-in methods:
  print: print('Hello World!') - prints to console 'Hello World!'
+ loop
+
  */
 
 var utils = require('./../utils/utils');
@@ -81,5 +83,23 @@ module.exports = {
         return input;
       }
     }
-  }
+  },
+
+  loop: function(start, condition, increment) {},
+
+  condition: function(condition){},
+
+  regexp: function(x, func) {},
+
+  module: function(x) {},
+
+  add: function(x, y) {},
+
+  minus: function(x, y) {},
+
+  multiply: function(x, y) {},
+
+  divide: function(x, y) {},
+
+  random: function(min, max) {}
 };

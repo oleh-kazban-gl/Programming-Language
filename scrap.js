@@ -70,10 +70,24 @@ var testSmartObject2 = {
     name: 'first',
     id: 0
   }
-}
+};
+
+var testString = 'try to test me :)';
+var testString2 = '100';
+var testString3 = '100.55';
 
 //commands.print(testIntArray);
 //commands.print(testStringArray);
 //commands.print(testSimpleObject);
-commands.print(testSmartObject2);
+//commands.print(testSmartObject2);
 //commands.print(testSmartArray2);
+
+var testParseInt = parseInt(testString);
+var testParseInt2 = parseInt(testString2);
+var testParseInt3 = parseInt(testString3);
+var testParseFloat3 = parseFloat(testString3);
+
+commands.print(testParseInt);
+commands.print(testParseInt2);
+commands.print(testParseInt3);
+commands.print(testParseFloat3);
