@@ -6,18 +6,19 @@
  *
  */
 
+var evaluate = require('./Glo/utils/evaluate');
+var environment = require('./Glo/utils/environment');
 var parse = require('./Glo/utils/parser');
-var keywords = require('./Glo/core/keywords');
-var compile = require('./Glo/utils/compiler');
 
 var path = './program';
 
 module.exports = {
   run: function() {
-    var source = module.exports.load();
-    var parsedSource = parse(source);
+    var env = Object.create(environment);
+    var program = Array.prototype.slice
+      .call(arguments, 0).join('\n');
 
-    compile(parsedSource);
+    return evaluate(parse(program), env);
   },
 
   load: function() {
@@ -28,4 +29,6 @@ module.exports = {
   }
 };
 
-module.exports.run();
+var program = module.exports.load();
+
+module.exports.run(program);

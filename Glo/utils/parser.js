@@ -6,107 +6,77 @@
  *
  */
 
-var keywords = require('./../core/keywords');
-var utils = require('./utils');
+module.exports = function (program) {
+  var result = parseExpression(program);
 
-module.exports = function (input) {
-  var query = [];
-
-  var inputSource = input.split('\r\n');
-
-  for (var count = 0; count < inputSource.length; count++) {
-    if (inputSource[count].length > 0) {
-      parseString(inputSource[count]);
-    }
+  if (skipSpace(result.rest).length > 0) {
+    throw new SyntaxError("Unexpected text after program");
   }
 
-  return query;
-
-  /**
-   * Function is used for parsing source String
-   */
-
-  function parseString(string) {
-    if (string !== '' ||
-      utils.inputType(string) !== 'null' ||
-      utils.inputType(string) !== 'undefined') {
-
-      //Skip commented String - the '# ' signature
-      if (string.charAt(0) === '#' && string.charAt(1) === ' ') {
-      }
-
-      //Search for operator occurrence operator(argument)
-      else if (string.match(/^\w*\(/).length > 0) {
-        var methodCall;
-        var arguments;
-
-        methodCall = string.match(/^\w*\(/)[0];
-        methodCall = methodCall.substring(0, methodCall.length - 1);
-        arguments = string.match(/\((.*?)\);/)[1];
-
-        //Search for internal calls
-        //if (arguments.match(/^\w*\(/).length > 0) {
-        //
-        //}
-
-        var functionCall = {};
-
-        //If argument is not internal call - what is in argument?
-
-        //Argument is simple String
-        if (arguments.charAt(0) === '\'' && arguments.charAt(arguments.length - 1) === '\'') {
-          arguments = arguments.substring(1, arguments.length - 1);
-
-          //Argument is a String of different arguments separated by coma ','
-          if (arguments.indexOf('\',\'') >= 0) {
-            var strings = arguments.split('\',\'');
-
-            //Restore original types of cells
-            for (var count = 0; count < strings.length; count++) {
-              strings[count] = restoreEntity(strings[count]);
-            }
-
-            functionCall[methodCall] = strings;
-          } else {
-            functionCall[methodCall] = arguments;
-          }
-        }
-
-
-        //Argument is an Array
-
-
-        query.push(functionCall);
-      }
-    }
-  }
-
-  /**
-   * Function is used for restoring of original primitives
-   */
-
-  function restoreEntity(entity) {
-    //Looking for dots - entity can be String or Float
-    if (entity.indexOf('.') >= 0) {
-      if (!isNaN(parseFloat(entity))) {
-        //Successfully converted to Float
-        return parseFloat(entity);
-      } else {
-        //Entity contains a dot, but convert failed, so it is a String
-        return entity;
-      }
-
-      //Entity doesn't contain dots - so it is either String without dots or Integer
-    } else {
-      if (!isNaN(parseInt(entity))) {
-        //Successfully converted to Float
-        return parseInt(entity);
-      } else {
-        //Entity doesn't contain a dot, but convert failed, so it is a String
-        return entity;
-      }
-    }
-  }
+  return result.expr;
 };
 
+function parseExpression(program) {
+  program = skipSpace(program);
 
+  var match, expr;
+  if (match = /^"([^"]*)"/.exec(program)) {
+    expr = {
+      type: 'value',
+      value: match[1]
+    };
+  } else if (match = /^\d+\b/.exec(program)) {
+    expr = {
+      type: 'value',
+      value: Number(match[0])
+    };
+  } else if (match = /^[^\s(),"]+/.exec(program)) {
+    expr = {
+      type: 'word',
+      name: match[0]
+    };
+  } else {
+    throw new SyntaxError('Unexpected syntax: ' + program);
+  }
+
+  return parseApply(expr, program.slice(match[0].length));
+}
+
+function skipSpace(string) {
+
+  var first = string.search(/\S/);
+  if (first == -1) return '';
+
+  return string.slice(first);
+}
+
+function parseApply(expr, program) {
+  program = skipSpace(program);
+  if (program[0] != '(') {
+    return {
+      expr: expr,
+      rest: program
+    }
+  }
+
+  program = skipSpace(program.slice(1));
+  expr = {
+    type: 'apply',
+    operator: expr, args: []
+  };
+
+  while (program[0] != ")") {
+    var arg = parseExpression(program);
+
+    expr.args.push(arg.expr);
+    program = skipSpace(arg.rest);
+
+    if (program[0] == ",") {
+      program = skipSpace(program.slice(1));
+    } else if (program[0] != ")") {
+      throw new SyntaxError("Expected ',' or ')'");
+    }
+  }
+
+  return parseApply(expr, program.slice(1));
+}
